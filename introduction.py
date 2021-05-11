@@ -41,3 +41,18 @@ Optimizations:
 
     - stack - not useful
 '''
+
+def findHIndex(citations):
+    citations.sort()
+    length = len(citations)
+    h_index = 1
+    idx = 0
+    while True:
+        while idx < len(citations) and citations[idx] < h_index:
+            idx += 1
+        if not length - idx >= h_index:
+            break
+        h_index += 1
+    return h_index - 1
+
+print(findHIndex([1, 4, 1, 4, 2, 1, 3, 5, 6]))
