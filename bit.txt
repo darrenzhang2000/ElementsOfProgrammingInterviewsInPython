@@ -1,0 +1,6 @@
+Operators: & | ^ >> 
+
+- Drop least significant bit (for parity checking): n & (n - 1) 
+- Toggle parity: parity = 1 - parity
+- Get least significant bit: n & 1
+
