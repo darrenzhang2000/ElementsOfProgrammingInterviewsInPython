@@ -246,7 +246,45 @@ def dutchFlagPartitioning(arr, pivotIdx):
     print('b', arr)
     return arr 
 
-arr = [0, 1, 2, 0, 2, 1, 1]
-print(dutchFlagPartitioning(arr, 1))
-arr = [0, 1, 2, 1, 5, 7, 4, 2, 3, 5, 1, 10]
-print(dutchFlagPartitioning(arr, 3))
+# arr = [0, 1, 2, 0, 2, 1, 1]
+# print(dutchFlagPartitioning(arr, 1))
+# arr = [0, 1, 2, 1, 5, 7, 4, 2, 3, 5, 1, 10]
+# print(dutchFlagPartitioning(arr, 3))
+
+'''
+dutch flag partition problem w/ one pass
+
+[0, 0, 1, 1, 1, 2, 2]
+       s
+             l
+             i                 
+
+'''
+
+def onePassDutchFlagPartitioning(arr, pivotIdx):
+    '''
+    invariant:
+    elements smaller than pivot -> arr[:smaller]
+    elements equal to pivot -> arr[smaller: equal]
+    unclassified -> arr[equal: larger]
+    elements larget than pivot -> arr[larger:]
+    '''
+    pivot = arr[pivotIdx]
+    smaller, larger = 0, len(arr) - 1
+    equal = 0
+    while equal < larger:
+        if arr[equal] < pivot:
+            swap(arr, smaller, equal)
+            smaller += 1
+            equal += 1
+        elif arr[equal] > pivot:
+            swap(arr, larger, equal)
+            larger -= 1
+        else:
+            equal += 1
+    return arr
+
+# arr = [0, 1, 2, 0, 2, 1, 1]
+# print(onePassDutchFlagPartitioning(arr, 1))
+# arr = [0, 1, 2, 1, 5, 7, 4, 2, 3, 5, 1, 10]
+# print(onePassDutchFlagPartitioning(arr, 3))
