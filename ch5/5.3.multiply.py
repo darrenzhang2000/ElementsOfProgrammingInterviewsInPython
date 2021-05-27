@@ -100,9 +100,46 @@ def intToArray(n):
         absN[0] *= -1
     return absN
 
+# arr1 = intToArray(123)
+# arr2 = intToArray(456)
+# print(multiply(arr1, arr2))
+# arr1 = intToArray(8)
+# arr2 = intToArray(-9)
+# print(multiply(arr1, arr2))
+
+'''
+EPI soln
+
+[9, 9]
+[9, 9]
+
+[0, 0, 8, 1]
+i = 1
+j = 0
+res[3] = 81
+res[2] = 8
+res[3] = 1
+
+'''
+
+def multiply2(arr1, arr2):
+    sign = -1 if (arr1[0] < 0) ^ (arr2[0] < 0) else 0
+    arr1[0], arr2[0] = abs(arr1[0]), abs(arr2[0])
+    product = [0] * (len(arr1) + len(arr2))
+    for i in reversed(range(len(arr1))):
+        for j in reversed(range(len(arr2))):
+            product[i + j + 1] += arr1[i] * arr2[j]
+            product[i + j] += product[i + j + 1] // 10
+            product[i + j + 1] %= 10
+
+    idxFirstNonZero = next((i for i, x in enumerate(product) if x != 0))
+    product = product[idxFirstNonZero:] or [0]
+    return [sign * product[0]] + product[1:]
+         
+
 arr1 = intToArray(123)
 arr2 = intToArray(456)
-print(multiply(arr1, arr2))
+print(multiply2(arr1, arr2))
 arr1 = intToArray(8)
 arr2 = intToArray(-9)
-print(multiply(arr1, arr2))
+print(multiply2(arr1, arr2))
