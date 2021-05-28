@@ -66,3 +66,17 @@ def buy_sell_stock_twice2(arr): # O(n) time O(n) space
 # print(buy_sell_stock_twice2(arr))
 # arr = [0,10,0,0, 100]
 # print(buy_sell_stock_twice2(arr))
+
+def buy_and_sell_stock_twice_constant_space(prices):
+    min_prices, max_profits = [float('inf')] * 2, [0] * 2
+    for price in prices:
+        for i in reversed(range(2)):
+            max_profits[i] = max(max_profits[i], price - min_prices[i])
+            min_prices[i] = min(min_prices[i],
+                                price - (0 if i == 0 else max_profits[i - 1]))
+            print(price, i, max_profits[i], min_prices[i])
+    return max_profits[-1]
+
+arr = [12,11,13,9,12,8,14,13,15]
+print(buy_and_sell_stock_twice_constant_space(arr))
+
