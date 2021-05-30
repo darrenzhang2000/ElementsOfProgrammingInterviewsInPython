@@ -23,7 +23,7 @@ def onlineRandomSample(): # time O(nk) where n is the number of input elements
 import itertools
 import random
 # assume at least k elements
-def onlineRandomSample2(stream, k):
+def onlineRandomSample2(stream, k): # O(n) time
     runningSample = list(itertools.islice(stream, k))
     numSeenSoFar = k
     for x in stream:
