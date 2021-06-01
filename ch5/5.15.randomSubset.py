@@ -51,7 +51,7 @@ def computeRandomSubset2(arr, k): # O(n) time O(k) space
         n = random.randrange(i, len(arr))
         if i == n:
             continue
-        else:
+        else: # incorrect ... missing mapped i case
             if n in ht:
                 ht[i] = ht[n] 
                 ht[n] = i # need to save i somewhere so we have a chance of choosing it
@@ -63,5 +63,91 @@ def computeRandomSubset2(arr, k): # O(n) time O(k) space
         subsets.append(ht[i] if i in ht else i)
     return subsets
 
+# arr = [1, 2, 3, 4, 5, 6, 7]
+# print(computeRandomSubset2(arr, 4))
+
+'''
+epi soln
+
+{
+    0:7, 
+    7:2,
+    1:1,
+    2:0,
+
+}
+choose 7
+choose 1
+choose 7
+choose 0 -> impossible 
+
+{
+    0: 7,
+    7: 2,
+    1: 1,
+    2: 0,
+
+}
+choose 7 # save 0
+choose 1 
+choose 7 -> 0 # save 2
+choose 0 -> impossible
+'''
+def randomSubset(arr, k):
+    changedElements = {}
+    for i in range(k):
+        randIdx = random.randrange(i, len(arr)) # 7 ... 1 ... 7 ... 0
+        randIdxMapped = changedElements.get(randIdx, randIdx) # 7 ... 1 ... 0 
+        iMapped = changedElements.get(i, i) # 0 ... 1 ... 2 ... 3
+        changedElements[randIdx] = iMapped # 7:0 ... 1:1 ... 7:2
+        changedElements[i] = randIdxMapped # 0:7 ... 1:1 ... 2:0 
+    return [changedElements[i] for i in range(k)]
+
+
+# arr = [1, 2, 3, 4, 5, 6, 7]
+# print(randomSubset(arr, 4))
+
+
+'''
+reflection: I need to consider all possible cases.
+ - randomIdx is unvisited, randomIdx is visited and mapped, i is unvisited, i is visited and mapped
+ - case 1: i is unvisited, randomIdx is unvisited
+    - ht[i], ht[randomIdx] = ht[randomIdx], ht[i]
+ - case 2: i is unvisited, randomIdx is visited
+    - mappedRandIdx = ht[randomIdx]
+    - ht[i], ht[randomIdx] = ht[mappedRandIdx], ht[i]
+ - case 3: i is visited, randomIdx is unvisited
+    - mappedI = ht[i]
+    - ht[i], ht[randomIdx] = ht[randomIdx], mappedI
+- case 4: i is visited, randomIdx is visited
+    - mappedI = ht[i]
+    - mappedRandIdx = ht[randIdx]
+    - ht[i], ht[randIdx] = ht[mappedRandIdx], 
+
+- code can be simplied to:
+    ht[i] = ht[randIdx] if randIdx in ht else randIdx
+    ht[randIdx] = ht[i] if i in ht else i
+
+
+- let's say we  get up to i = 8, and 8 stores 3. randIdx chosen is 11, which stores 4.
+- we want ht[8] = 4 and store the 3 elsewhere (at randIdx=11).
+- so, ht[i], ht[randIdx] = ht[mappedRandIdx], ht[mappedI]
+- prevHt = {8:3, 11:4} 
+- nowHt = {8:4, 11:3}
+
+
+after refl code
+'''
+def randomSubsetAfterRefl(arr, k):
+    ht = {}
+    for i in range(k):
+        randIdx = random.randrange(i, len(arr))
+        mappedRandIdx = ht[randIdx] if randIdx in ht else randIdx
+        mappedI = ht[i] if i in ht else i
+        ht[i] = mappedRandIdx 
+        ht[randIdx] = mappedI
+    return [ht[i] for i in range(k)]
+
 arr = [1, 2, 3, 4, 5, 6, 7]
-print(computeRandomSubset2(arr, 4))
+print(randomSubsetAfterRefl(arr, 4))
+
