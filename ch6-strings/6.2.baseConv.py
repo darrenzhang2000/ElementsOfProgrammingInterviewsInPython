@@ -17,7 +17,10 @@ conv2 to base 10 -> 0*2^0+0*2^1+1*2^2+1*2^3 = 2 + 8 = 10
 1/2=0R1
 1000000000
 
+
+missing hexadecimals
 '''
+
 
 def baseConv(b1, b2, n):
     base10N = convToBase10(b1, n)
