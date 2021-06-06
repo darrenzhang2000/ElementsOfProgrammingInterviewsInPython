@@ -53,4 +53,25 @@ def reverseWord2(s: List[str]) -> List[str]:
     reverseRange(s, start, len(s) - 1) # reverse last word
     return s
 
-print(reverseWord2(s))
+#print(reverseWord2(s))
+
+def reverseWord3(s: List[str]) -> List[str]:
+    def reverseRange(s, start, end):
+        while start < end:
+            s[start], s[end] = s[end], s[start]
+            start, end = start + 1, end - 1
+    
+    reverseRange(s, 0, len(s) - 1)
+    start, end = 0, 0
+    while True:
+        end = start
+        while end < len(s) and end != ' ':
+            end += 1
+        if end == len(s):
+            break
+        reverseRange(s, start, end - 1)
+        start = end + 1
+    reverseRange(s, start, len(s) - 1) # reverse last word
+    return s
+
+print(reverseWord3(s))
