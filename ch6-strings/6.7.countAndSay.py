@@ -24,4 +24,28 @@ def lookAndSay(n):
         prev = "".join(cur)
     return prev
 
+# print(lookAndSay(6))
+
+def lookAndSay2(n):
+    def nextNum(n):
+        cur = []
+        start = 0
+        end = 0
+        while True:
+            while end < len(n) and n[end] == n[start]:
+                end += 1
+            cur.append(str(end - start)) # how many
+            cur.append(n[start]) # of this number
+            if end == len(n):
+                break
+            start = end
+        return "".join(cur)
+
+    if n == 1:
+        return '1'
+    s = '1'
+    for _ in range(1, n):
+        s = nextNum(s)
+    return s
+
 print(lookAndSay(6))
